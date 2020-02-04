@@ -3,7 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+<<<<<<< HEAD
     "Final-Nano": {
+=======
+    "storage-box": {
+>>>>>>> initial commit
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +21,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+<<<<<<< HEAD
             "outputPath": "dist/Final-Nano",
+=======
+            "outputPath": "dist/storage-box",
+>>>>>>> initial commit
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +75,30 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+<<<<<<< HEAD
             "browserTarget": "Final-Nano:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "Final-Nano:build:production"
+=======
+            "browserTarget": "storage-box:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "storage-box:build:production"
+>>>>>>> initial commit
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
+<<<<<<< HEAD
             "browserTarget": "Final-Nano:build"
+=======
+            "browserTarget": "storage-box:build"
+>>>>>>> initial commit
           }
         },
         "test": {
@@ -115,15 +135,27 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
+<<<<<<< HEAD
             "devServerTarget": "Final-Nano:serve"
           },
           "configurations": {
             "production": {
               "devServerTarget": "Final-Nano:serve:production"
+=======
+            "devServerTarget": "storage-box:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "storage-box:serve:production"
+>>>>>>> initial commit
             }
           }
         }
       }
     }},
+<<<<<<< HEAD
   "defaultProject": "Final-Nano"
+=======
+  "defaultProject": "storage-box"
+>>>>>>> initial commit
 }
