@@ -1,0 +1,34 @@
+//Global styles and changable variables
+
+//Imported fonts
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700|Nunito:400,700');
+
+//Variables
+$turqoise: #06f8e4;
+$blue: #0000ff;
+$light-green: #3df856;
+
+$dark-green: rgb(9, 82, 2);
+$light: #f8f8f8;
+
+//Bulma global variables
+$family-sans-serif: "Nunito", sans-serif;
+$primary: $blue;
+$link: $light-green;
+
+//Bulma component variables
+$control-border-width: 2px;
+$input-border-color: transparent;
+$input-shadow: none;
+
+//Custom global style
+
+html 
+{
+    background: linear-gradient(to right top, $turqoise, $blue);
+}
+
+html, body 
+{
+    height: 100%;
+}
