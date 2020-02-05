@@ -16,11 +16,7 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
-<<<<<<< HEAD
-      dir: require('path').join(__dirname, './coverage/Final-Nano'),
-=======
       dir: require('path').join(__dirname, './coverage/storage-box'),
->>>>>>> initial commit
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
