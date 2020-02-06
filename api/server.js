@@ -1,4 +1,4 @@
-const cors = require('cors');
+// const cors = require('cors');
 const express = require('express');
 const app = express(); 
 
@@ -11,35 +11,27 @@ const jwt = require('express-jwt');
  * LOAD MIDDLEWARE
  */
 //app.use(cors());
-//app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
-
-app.get('/loca/:id', (req, res) => 
-{
-    console.log("In Get!");
-    Location.find({_id: req.params.id}).then((loca) =>
-    {
-        res.send(loca);
-    })
-    .catch((e) =>
-    {
-        res.send(e);
-    });
-});
 
 
 /************* ROUTE HANDLERS *******************/
 
 app.use('/loca', require('./controllers/location.controller'));
 
-// app.use('/login', require('./controllers/login.controller'));
+app.use('/', require('./controllers/login.controller'));
+
+app.use('/user', require('./controllers/user.controller'));
 
 // error handler
-app.use(function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
+app.use(function (err, req, res, next) 
+{
+    if (err.name === 'UnauthorizedError') 
+    {
         res.status(401).send('Invalid Token Bitch');
-    } else {
+    } 
+    else 
+    {
         throw err;
     }
 });

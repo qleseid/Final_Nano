@@ -3,7 +3,7 @@
 const mong = require('mongoose');
 
 mong.Promise = global.Promise;
-mong.connect('mongodb://localhost:27017/StorageBox', 
+mong.connect("mongodb://localhost:27017/storage-box", 
 {
     useNewUrlParser: true, useUnifiedTopology: true
 })
@@ -25,3 +25,4 @@ module.exports =
 {
     mong
 };
+// console.log("Past exports");

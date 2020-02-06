@@ -4,7 +4,7 @@ const mong = require('mongoose');
 
 const LocationSchema = new mong.Schema(
     {
-        _id: mong.Schema.Types.ObjectId,
+        // _id: mong.Schema.Types.ObjectId,
         owner_id:
         {
             // type: mong.Schema.Types.ObjectId,

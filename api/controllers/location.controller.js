@@ -1,34 +1,41 @@
-const express = require('express');
-const router = express.Router(); 
-
-const { mong } = require('../db/mongoose');
-const db = mong.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  // we're connected!
-   console.log("CONNECTED!");
-});
-/* LOCATION ROUTES */
-
-router.get('/loca:id', getUserLocation);
-router.post('/loca', create);
-router.patch('/loca:id', update);
-router.delete('/loca:id', _delete);
-
-module.exports = router;
-
 /**
  * LOAD MONGOOSE MODELS
  */
 const { Location } = require('./../db/models');
+const express = require('express');
+const router = express.Router(); 
+
+// const { mong } = require('../db/mongoose');
+/* LOCATION ROUTES */
+
+router.get('/all', getAll);
+router.get('/', get);
+router.post('/', create);
+router.patch('/:id', update);
+router.delete('/:id', _delete);
+
+module.exports = router;
 
 /**
- * Gets all the locations for specific user
+ * Gets simple message to show it's working from browser
  */
-function getUserLocation(req, res) 
+function getAll(req, res) 
 {
-    console.log("In Get!");
-    Location.find({title: "hi"}).then((loca) =>
+    console.log("In Location Get!");
+    res.json(
+        {"message":
+         "Welcome to Location API."
+        }); 
+};
+
+
+/**
+ * Gets all the locations in db
+ */
+function get(req, res) 
+{
+    console.log("In User Location Get!");
+    Location.find().then((loca) =>
     {
         res.send(loca);
     })
@@ -70,7 +77,14 @@ function create(req, res)
  */
 function update(req, res)
 {
-    res.send("Hello World");
+    Location.findOneAndUpdate({_id: req.params.id}, 
+        {
+            $set: req.body
+        })
+        .then(() => 
+        {
+            res.sendStatus(200);
+        })
 };
 
 /**
@@ -78,5 +92,12 @@ function update(req, res)
  */
 function _delete(req, res)
 {
-    res.send("Hello World");
+    Location.findOneAndRemove(
+        {
+            _id: req.params.id  
+        })
+        .then((rmDoc) => 
+        {
+            res.send(rmDoc);
+        })
 };

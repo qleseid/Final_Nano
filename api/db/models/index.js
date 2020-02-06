@@ -1,8 +1,8 @@
 const { Location } = require('./location.model');
-const { Login } = require('./login.model');
+const { User } = require('./user.model');
 
 module.exports =
 {
-    Login,
+    User,
     Location
 };
