@@ -7,6 +7,8 @@ const { mong } = require('./db/mongoose');
 const bodyParser = require('body-parser');
 const jwt = require('express-jwt');
 
+/** MIDDLEWARE**/
+
 /**
  * LOAD MIDDLEWARE
  */
@@ -15,13 +17,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 
+
+/** END OF MIDDLEWARE **/
+
 /************* ROUTE HANDLERS *******************/
 
 app.use('/loca', require('./controllers/location.controller'));
 
 app.use('/', require('./controllers/login.controller'));
 
-app.use('/user', require('./controllers/user.controller'));
+app.use('/users', require('./controllers/user.controller'));
 
 // error handler
 app.use(function (err, req, res, next) 

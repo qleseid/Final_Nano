@@ -133,18 +133,18 @@ UserSchema.methods.createSession = function()
 
 /** MODEL METHODS statics **/
 
-UserSchema.statics.findByIdAndToken = function(_id, token)
+UserSchema.statics.findByIdAndToken = function(id, token)
 {
     const User = this;
 
     return User.findOne(
         {
-            _id,
+            _id: id,
             'sessions.token': token
         });
 }
 
-UserSchema.statics.findByCredentials = function(email, password)
+UserSchema.statics.findByCredentials = function(username, password)
 {
     let User = this;
     return User.findOne({username}).then((user) =>
@@ -175,10 +175,12 @@ UserSchema.statics.hasRefreshTokenExpired = (expiresAt) =>
     let secondsSinceEpoch = Date.now() / 1000;
     if(expiresAt > secondsSinceEpoch)
     {
+		console.log("Token hasn't expired!");
         return false; //Hasn't expired
     }
     else
     {
+		console.log("Token expired!");
         return true; //Has Expired
     }
 }

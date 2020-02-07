@@ -6,10 +6,11 @@
 //Variables
 $turqoise: #06f8e4;
 $blue: #0000ff;
-$light-green: #3df856;
+$light-green: #3ddcf8;
 
 $dark-green: rgb(9, 82, 2);
 $light: #f8f8f8;
+$lighter: #f7f7f7;
 
 //Bulma global variables
 $family-sans-serif: "Nunito", sans-serif;
@@ -25,7 +26,7 @@ $input-shadow: none;
 
 html 
 {
-    background: linear-gradient(to right top, $turqoise, $blue);
+    background: linear-gradient(to right top, $light, $lighter);
 }
 
 html, body 
