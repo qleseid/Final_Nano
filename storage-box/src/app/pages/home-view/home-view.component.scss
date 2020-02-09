@@ -14,13 +14,17 @@
     height: 100%;
     max-width: 1000px;
     max-height: 680px;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: lighter;
 }
 
 .sidebar {
     display: flex;
     flex-direction: column;
     width: 300px;
-    padding: 40px;
+    padding: 25px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
 }
@@ -29,7 +33,10 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    padding: 40px;
+    padding-top: 25px;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-bottom: 5px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
 }
@@ -46,6 +53,7 @@
     flex-direction: column;
     margin-top: 15px;
     flex-grow: 1;
+    overflow-y: auto;
 
     .selectable-area-item {
         display: flex;
@@ -102,4 +110,8 @@
 
 .selected-img {
     margin-top: 10px;
+}
+
+.button {
+    margin-top: 25px;
 }

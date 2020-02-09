@@ -1,7 +1,7 @@
-
 /**
  * LOAD MONGOOSE MODELS
  */
+const { User } = require('./../db/models');
 const { Login } = require('../db/models');
 const { Location } = require('../db/models');
 
@@ -12,75 +12,78 @@ const router = express.Router();
 
 /* LOCATION ROUTES */
 
-router.get('/', getUserLocation);
-router.post('/loca', create);
-router.patch('/loca:id', update);
-router.delete('/loca:id', _delete);
+router.post('/make', create);
+router.post('/login', login);
 
 module.exports = router;
 
 /**
- * Gets all the locations for specific user
- */
-function getUserLocation(req, res) 
-{
-    console.log("In Login Get!");
-    res.json(
-        {"message":
-         "Welcome to Login API."
-        });
-        /*
-    Location.find().then((loca) =>
-    {
-        res.send(loca);
-    })
-    .catch((e) =>
-    {
-        res.send(e);
-    });
-    */
-};
-
-/**
- * Create new location for specific user
+ * Create new user
  */
 function create(req, res)
 {
-    console.log("In Create!");
+    console.log("In Login-Create User!");
 
-    let owner_id = req.body.owner_id;
-    let title = req.body.title;
-    let file_path = req.body.file_path;
-    let description = req.body.description;
+    let body = req.body;
+    let newUser = new User(body);
 
-    let newLoca = new Location(
-        {
-            owner_id,
-            title,
-            file_path,
-            description
-        }
-    );
-
-    newLoca.save().then((list) => 
+    newUser.save().then(() => 
     {
-        res.send(list);
+        return newUser.createSession();
+    })
+    .then((refreshToken) => 
+    {
+        //Session created with success. Refresh token returned
+        return newUser.generateAccessAuthToken().then((accessToken) => 
+        {
+            return {accessToken, refreshToken}
+        });
+    })
+    .then((authToken) =>
+    {
+        res
+        .header('x-refresh-token', authToken.refreshToken)
+        .header('x-access-token', authToken.accessToken)
+        .send(newUser);
+    })
+    .catch((e) =>
+    {
+        res.status(400).send(e);
     });
 };
 
 /**
- * Update a location for specific user
+ *    LOGIN
+ *  
+ * @param {*} req 
+ * @param {*} res 
  */
-function update(req, res)
+function login(req, res)
 {
-    
-    res.send("Hello World");
-};
+    console.log("In Login!");
 
-/**
- * Delete a location for specific user
- */
-function _delete(req, res)
-{
-    res.send("Hello World");
+    let username = req.body.username;
+    let password = req.body.password;
+
+    User.findByCredentials(username, password).then((user) => 
+    {
+        return user.createSession().then((refreshToken) =>
+        {
+            return user.generateAccessAuthToken().then((accessToken) =>
+            {
+                return {accessToken, refreshToken}
+            });
+        })
+        .then((authToken) =>
+        {
+            res
+            .header('x-refresh-token', authToken.refreshToken)
+            .header('x-access-token', authToken.accessToken)
+            .send(user);
+        });
+    })
+    .catch((e) =>
+    {
+        res.status(400).send(e);
+    });    
 };

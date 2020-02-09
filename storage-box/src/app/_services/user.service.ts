@@ -17,9 +17,9 @@ export class UserService
         return this.http.get<any[]>(appConfig.apiUrl + "/users/all");
     }
 
-    getById(_id: string)
+    getById(id: string)
     {
-        return this.http.get(appConfig.apiUrl + "/users/" + _id);
+        return this.http.get(appConfig.apiUrl + "/users/" + id);
     }
 
     create(user: any)
@@ -32,8 +32,8 @@ export class UserService
         return this.http.patch(appConfig.apiUrl + "/users/" + user._id, user);
     }
 
-    delete(_id: string)
+    delete(id: string)
     {
-        return this.http.delete(appConfig.apiUrl + "/users/" + _id);
+        return this.http.delete(appConfig.apiUrl + "/users/" + id);
     }
 }

@@ -37,6 +37,7 @@
   border-style: solid;
 }
 
+// Title
 .title {
   font-family: "Lato";
   font-size: 24px;
@@ -44,11 +45,13 @@
   letter-spacing: 1px;
 }
 
+// Outlines the input boxes
 .input {
     border-color: black;
     border-width: 1px;    
 }
 
+// Each input field surrounded by div
 .control {
 
 
@@ -64,10 +67,12 @@
   }
 }
 
+// Errors that show up when field is incomplete
 .help-block {
     color:  #ff0000;
 }
 
+// Login Button 
 button {
   margin-right: 200px;
   border-radius: 3px;
@@ -80,6 +85,7 @@ button {
   }
 }
 
+// Register Link
 .btn {
   color: $primary;
   margin-top: 5px;
@@ -92,8 +98,10 @@ button {
   }
 }
 
+// Makes the input field placeholder a different color
+// darker was the goal today.
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: rgb(180, 177, 177);
+    color: rgb(153, 151, 151);
     opacity: 1; /* Firefox */
   }
   

@@ -37,6 +37,7 @@
   border-style: solid;
 }
 
+// Title
 .title {
   font-family: "Lato";
   font-size: 24px;
@@ -44,6 +45,8 @@
   letter-spacing: 1px;
 }
 
+
+// Each input field surrounded by div
 .form-group {
   display: flex;
   flex-direction: column;
@@ -67,6 +70,7 @@
   }
 }
 
+// Each input field
 .form-control {
   padding: 10px 20px;
   border-radius: 3px;
@@ -84,10 +88,12 @@
   }
 }
 
+// Errors that show up when field is incomplete
 .help-block {
     color:  #ff0000;
 }
 
+// Login Button 
 .button {
   margin-right: 200px;
   border-radius: 3px;
@@ -100,6 +106,7 @@
   }
 }
 
+// Cancel Link
 .btn-link {
   color: $primary;
   margin-top: 5px;

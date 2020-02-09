@@ -1,6 +1,6 @@
 import { UserService } from "./_services/user.service";
 import { AuthGuard } from "./_guards/auth.guard";
-import { ErrorInterceptorProvider } from "./_interceptor/error.interceptor";
+import { ErrorInterceptor } from "./_interceptor/error.interceptor";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
@@ -13,13 +13,15 @@ import { RegisterComponent } from "./pages/register/register.component";
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthenticationService, AlertService } from "./_services";
+import { AlertComponent } from './_interceptor/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeViewComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,7 @@ import { AuthenticationService, AlertService } from "./_services";
     FormsModule
   ],
   providers: [
-    ErrorInterceptorProvider,
+    ErrorInterceptor,
     AuthGuard,
     AlertService,
     AuthenticationService,

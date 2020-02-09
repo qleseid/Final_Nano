@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
   {
-    if (localStorage.getItem("currentUser"))
+    if (localStorage.getItem("x-refresh-token"))
     {
       // logged in so return true
       console.log("AUTH GUARD GOOD: " + localStorage.length);
@@ -27,6 +27,7 @@ export class AuthGuard implements CanActivate
 
     // not logged in so redirect to login page with the return url
     console.log("AUTH GUARD FAIL: " + localStorage.length);
+    console.log("AUTH GUARD FAIL: " + localStorage.getItem("x-refresh-token"));
     this.router.navigate(["/login"],
     { queryParams:
       { returnUrl: state.url }
