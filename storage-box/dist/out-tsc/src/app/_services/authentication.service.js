@@ -1,31 +1,63 @@
 import * as tslib_1 from "tslib";
 import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators";
+import { shareReplay, tap } from "rxjs/operators";
 import { appConfig } from "../app.config";
 let AuthenticationService = class AuthenticationService {
-    constructor(http) {
+    constructor(loginService, router, http) {
+        this.loginService = loginService;
+        this.router = router;
         this.http = http;
     }
-    login(username, password) {
-        return this.http
-            .post(appConfig.apiUrl + "/users/login", {
-            username,
-            password
-        })
-            .pipe(map(user => {
-            // login successful if there's a jwt token in the response
-            console.log("AUTH token: " + user.accessToken);
-            console.log("AUTH: " + user);
-            if (user && user.accessToken) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem("currentUser", JSON.stringify(user));
-            }
-            return user;
+    login(email, password) {
+        return this.loginService.login(email, password).pipe(shareReplay(), tap((res) => {
+            // the auth tokens will be in the header of this response
+            this.setSession(res.body._id, res.headers.get("x-access-token"), res.headers.get("x-refresh-token"));
+            console.log("LOGGED IN!");
+        }));
+    }
+    signup(user) {
+        return this.loginService.signup(user).pipe(shareReplay(), tap((res) => {
+            // Auth tokens will be in the header of this response
+            this.setSession(res.body._id, res.headers.get("x-access-token"), res.headers.get("x-refresh-token"));
+            console.log("Successfully signed up and now logged in!");
         }));
     }
     logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem("currentUser");
+        this.removeSession();
+        this.router.navigate(["/login"]);
+    }
+    getAccessToken() {
+        return localStorage.getItem("x-access-token");
+    }
+    getRefreshToken() {
+        return localStorage.getItem("x-refresh-token");
+    }
+    getUserId() {
+        return localStorage.getItem("user-id");
+    }
+    setAccessToken(accessToken) {
+        localStorage.setItem("x-access-token", accessToken);
+    }
+    setSession(userId, accessToken, refreshToken) {
+        localStorage.setItem("user-id", userId);
+        localStorage.setItem("x-access-token", accessToken);
+        localStorage.setItem("x-refresh-token", refreshToken);
+    }
+    removeSession() {
+        localStorage.removeItem("user-id");
+        localStorage.removeItem("x-access-token");
+        localStorage.removeItem("x-refresh-token");
+    }
+    getNewAccessToken() {
+        return this.http.get(`${appConfig.apiUrl}/users/me/access-token`, {
+            headers: {
+                "x-refresh-token": this.getRefreshToken(),
+                _id: this.getUserId()
+            },
+            observe: "response"
+        }).pipe(tap((res) => {
+            this.setAccessToken(res.headers.get("x-access-token"));
+        }));
     }
 };
 AuthenticationService = tslib_1.__decorate([

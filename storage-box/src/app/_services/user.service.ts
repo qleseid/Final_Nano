@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
 import { appConfig } from "../app.config";
-// import { User } from "../_models/index";
 
 @Injectable(
   {
@@ -20,16 +19,6 @@ export class UserService
     getById(id: string)
     {
         return this.http.get(appConfig.apiUrl + "/users/" + id);
-    }
-
-    create(user: any)
-    {
-        return this.http.post(appConfig.apiUrl + "/users", user);
-    }
-
-    update(user: any)
-    {
-        return this.http.patch(appConfig.apiUrl + "/users/" + user._id, user);
     }
 
     delete(id: string)

@@ -5,11 +5,14 @@ let AuthGuard = class AuthGuard {
         this.router = router;
     }
     canActivate(route, state) {
-        if (localStorage.getItem("currentUser")) {
+        if (localStorage.getItem("x-refresh-token")) {
             // logged in so return true
+            console.log("AUTH GUARD GOOD: " + localStorage.length);
             return true;
         }
         // not logged in so redirect to login page with the return url
+        console.log("AUTH GUARD FAIL: " + localStorage.length);
+        console.log("AUTH GUARD FAIL: " + localStorage.getItem("x-refresh-token"));
         this.router.navigate(["/login"], { queryParams: { returnUrl: state.url }
         });
         return false;

@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "go": "tsc && concurrently \"npm run tsc:w\" \"npm run start\" ", 
     "run": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "build": "ng build",
     "test": "ng test",

@@ -1,6 +1,6 @@
 import * as tslib_1 from "tslib";
-import { RegisterComponent } from "./pages/register/register/register.component";
-import { LoginComponent } from "./pages/login/login/login.component";
+import { RegisterComponent } from "./pages/register/register.component";
+import { LoginComponent } from "./pages/login/login.component";
 import { AuthGuard } from "./_guards/auth.guard";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";

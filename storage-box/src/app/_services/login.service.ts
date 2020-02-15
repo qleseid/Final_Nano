@@ -25,7 +25,7 @@ export class LoginService
     }
 
     signup(user: any) {
-      return this.http.post(`${appConfig.apiUrl}/make`, user, 
+      return this.http.post(`${appConfig.apiUrl}/make`, user,
         {
           observe: "response"
         });
