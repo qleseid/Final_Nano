@@ -12,7 +12,8 @@ import { LoginComponent } from "./pages/login/index";
 import { RegisterComponent } from "./pages/register/register.component";
 import { HttpClientModule } from "@angular/common/http";
 import { AuthenticationService, AlertService } from "./_services";
-import { AlertComponent } from './_interceptor/alert.component';
+import { AlertComponent } from "./_interceptor/alert.component";
+import { LoginFormComponent } from "./pages/login/login-form/login-form/login-form.component";
 let AppModule = class AppModule {
 };
 AppModule = tslib_1.__decorate([
@@ -22,7 +23,8 @@ AppModule = tslib_1.__decorate([
             HomeViewComponent,
             LoginComponent,
             RegisterComponent,
-            AlertComponent
+            AlertComponent,
+            LoginFormComponent
         ],
         imports: [
             BrowserModule,

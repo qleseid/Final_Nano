@@ -6,7 +6,7 @@ let LoginComponent = class LoginComponent {
         this.router = router;
         this.authenticationService = authenticationService;
         this.alertService = alertService;
-        this.model = {};
+        // model: any = {};
         this.loading = false;
     }
     ngOnInit() {
@@ -15,10 +15,10 @@ let LoginComponent = class LoginComponent {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams.returnUrl || "/";
     }
-    login() {
+    login(model) {
         this.loading = true;
         this.authenticationService
-            .login(this.model.username, this.model.password)
+            .login(model.username, model.password)
             .subscribe(data => {
             this.router.navigate([this.returnUrl]);
         }, error => {

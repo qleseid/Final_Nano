@@ -103,12 +103,12 @@ selectedDesctip = "NO DESCRIPTION YET";
   deleteItemClick()
   {
     console.log("Delete Item Clicked");
-    
+
   }
 
   updateItemClick()
   {
     console.log("Update Item Clicked");
-    
+
   }
 }

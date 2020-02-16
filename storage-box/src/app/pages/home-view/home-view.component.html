@@ -1,38 +1,33 @@
 <div class="centered-content">
   <div class="home-container">
-
     <!--*********** SIDE BAR **********-->
     <div class="sidebar has-background-white">
       <h1 class="title has-text-primary">
         Locations
       </h1>
-
       <div class="selectable-area">
 
-        <article class="media selectable-area-item"
-        *ngFor="let item of items; let i = index"
-        (click)="itemClicked(item, i)"
-          [ngStyle]="{'background': ((i + 1) % 2) == 0 ? 'burlywood' : 'lightsteelblue'}">
+        <!--*********** SIDE BAR LIST ITEMS **********-->
+        <article class="media selectable-area-item" *ngFor="let item of items; let i = index"
+          (click)="itemClicked(item, i)" [ngStyle]="{
+            background: (i + 1) % 2 == 0 ? 'burlywood' : 'lightsteelblue'}">
           <figure class="media-left">
             <p class="image is-64x64">
-              <img #img src="{{item.img}}">
+              <img #img src="{{ item.img }}" />
             </p>
           </figure>
           <div class="media-content">
             <div class="content">
-              <p #title>
-                {{item.title}}{{i + 1}}
-              </p>
+              <p #title>{{ item.title }}{{ i + 1 }}</p>
             </div>
           </div>
         </article>
-
-       
       </div>
+
+    <!--*********** SIDE BAR MENU BUTTON**********-->
       <div class="dropdown is-up">
         <div class="dropdown-trigger">
           <button class="button is-primary is-inverted" aria-haspopup="true" aria-controls="dropdown-menu7">
-
             <span class="icon">
               <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor"
@@ -51,8 +46,8 @@
                 <a (click)="updateItemClick()" class="dropdown-item">
                   Update Item
                 </a>
-                <hr class="dropdown-divider">
-                <a (click)="deleteItemClick()" class="dropdown-item tag is-danger ">
+                <hr class="dropdown-divider" />
+                <a (click)="deleteItemClick()" class="dropdown-item tag is-danger">
                   <span class="icon is-small">
                     <i class="fa fa-times"></i>
                   </span>
@@ -63,7 +58,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <!--*********** MAIN AREA **********-->
@@ -73,10 +67,10 @@
           Selected
         </h1>
 
+    <!--*********** MAIN AREA MENU **********-->
         <div class="dropdown is-right is-hoverable">
           <div class="dropdown-trigger">
             <button class="button is-primary is-inverted" aria-haspopup="true" aria-controls="dropdown-menu4">
-
               <span class="icon">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                   <path fill="currentColor"
@@ -98,7 +92,7 @@
                       <button class="delete is-medium"></button>
                     </span>
                   </a>
-                  <hr class="dropdown-divider">
+                  <hr class="dropdown-divider" />
                   <a (click)="deleteItemClick()" class="dropdown-item button is-danger">
                     <span class="icon is-small">
                       <i class="fa fa-times"></i>
@@ -110,20 +104,20 @@
             </div>
           </div>
         </div>
-
       </div>
+
+    <!--*********** MAIN AREA CONTENT **********-->
       <div class="desc-title-area has-background-white">
-        <p>{{selectedTitle}}</p>
+        <p>{{ selectedTitle }}</p>
       </div>
-
 
       <div class="selected-img image is-16by9">
-        <img src={{selectedImg}} alt="Item" width="720" height="720">
+        <img src="{{ selectedImg }}" alt="Item" width="720" height="720" />
       </div>
 
-      <textarea class="desc-text-area has-background-white">{{selectedDesctip}}</textarea>
-
+      <textarea class="desc-text-area has-background-white">{{
+        selectedDesctip
+      }}</textarea>
     </div>
-
   </div>
 </div>

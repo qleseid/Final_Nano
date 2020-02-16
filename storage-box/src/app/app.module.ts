@@ -13,7 +13,8 @@ import { RegisterComponent } from "./pages/register/register.component";
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthenticationService, AlertService } from "./_services";
-import { AlertComponent } from './_interceptor/alert.component';
+import { AlertComponent } from "./_interceptor/alert.component";
+import { LoginFormComponent } from "./pages/login/login-form/login-form/login-form.component";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AlertComponent } from './_interceptor/alert.component';
     HomeViewComponent,
     LoginComponent,
     RegisterComponent,
-    AlertComponent
+    AlertComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,

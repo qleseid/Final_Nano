@@ -10,7 +10,7 @@ import { AlertService, AuthenticationService } from "../../_services/index";
 })
 export class LoginComponent implements OnInit
 {
-  model: any = {};
+  // model: any = {};
   loading = false;
   returnUrl: string;
 
@@ -30,11 +30,11 @@ export class LoginComponent implements OnInit
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || "/";
   }
 
-  login()
+  login(model: any)
   {
     this.loading = true;
     this.authenticationService
-      .login(this.model.username, this.model.password)
+      .login(model.username, model.password)
       .subscribe(data =>
         {
           this.router.navigate([this.returnUrl]);
