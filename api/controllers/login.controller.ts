@@ -1,13 +1,10 @@
-import { UserSchema, IUserModel } from './../db/models/user.model';
-/**
- * LOAD MONGOOSE MODELS
- */
-import { User } from '../db/models'
-//const { User } = require('../db/models');
+import  {User}  from "../db/models";
+// const { User } = require('../db/models');
 //const { Login } = require('../db/models');
 //const { Location } = require('../db/models');
-import Q = require('q');
+import Q from "q";
 import express = require('express');
+import userModel from "../db/models/user.model";
 
 export const router = express.Router(); 
 
@@ -22,7 +19,7 @@ router.post('/login', login);
 /**
  * Create new user
  */
-function _create(req, res)
+function _create(req: any, res: any)
 {
     console.log("In Login-Create User!");
 
@@ -36,22 +33,22 @@ function _create(req, res)
         {
             return newUser.createSession();
         })
-        .then((refreshToken) => 
+        .then((refreshToken: any) => 
         {
             //Session created with success. Refresh token returned
-            return newUser.generateAccessAuthToken().then((accessToken) => 
+            return newUser.generateAccessAuthToken().then((accessToken: any) => 
             {
                 return {accessToken, refreshToken}
             });
         })
-        .then((authToken) =>
+        .then((authToken: any) =>
         {
             res
             .header('x-refresh-token', authToken.refreshToken)
             .header('x-access-token', authToken.accessToken)
             .send(newUser);
         })
-        .catch((e) =>
+        .catch((e: any) =>
         {
             console.log("Inside Reg Cre" + e);
             res.status(400).send("" + e);
@@ -70,23 +67,22 @@ function _create(req, res)
  * @param {*} req 
  * @param {*} res 
  */
-function login(req, res)
+function login(req: any, res: any)
 {
     console.log("In Login!");
-
     let username = req.body.username;
     let password = req.body.password;
-
-    User.findByCredentials(username, password).then((user) => 
+    
+    User.findByCredentials(username, password).then((user: any) => 
     {
-        return user.createSession().then((refreshToken) =>
+        return user.createSession().then((refreshToken: any) =>
         {
-            return user.generateAccessAuthToken().then((accessToken) =>
+            return user.generateAccessAuthToken().then((accessToken: any) =>
             {
                 return {accessToken, refreshToken}
             });
         })
-        .then((authToken) =>
+        .then((authToken: any) =>
         {
             res
             .header('x-refresh-token', authToken.refreshToken)
@@ -94,7 +90,7 @@ function login(req, res)
             .send(user);
         });
     })
-    .catch((e) =>
+    .catch((e: any) =>
     {
         console.log("" + e);
         res.status(400).send("" + e);
@@ -106,12 +102,12 @@ function login(req, res)
  * 
  * @param body 
  */
-function checkUser (username)
+function checkUser (username: any)
 {
-    let def = new Q.defer();
+    let def = Q.defer();
     console.log("In Check User!");
 
-    User.findOne({username}, (err, user) =>
+    User.findOne({username}, (err: any, user: any) =>
     {
         console.log("In Check User FindOne!");
         if (err)

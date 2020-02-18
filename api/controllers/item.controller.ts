@@ -1,3 +1,4 @@
+import { IItemInterface, ItemSchema } from './../db/models/item.model';
 /**
  * LOAD MONGOOSE MODELS
  */
@@ -19,96 +20,110 @@ router.delete('/:id', mid.authenticate, _delete);
 
 
 /**
- * Gets simple message to show it's working from browser
+ * Find all the items owned by specific id
  */
-function getAll(req, res) 
+function getAll(req: any, res: any) 
 {
     console.log("In All Item Get for: " + req.params.owner);
-    Item.find({owner_id: req.params.owner}).then((item) =>
+
+    Item.find(
+        {owner_id: req.params.owner},
+        (err: any, items: IItemInterface) =>
     {
-        res.send(item);
-    })
-    .catch((e) =>
-    {
-        res.send(e);
+        if (err)
+        {
+            res.send(err);
+        }
+        else
+        {
+            res.send(items);
+        }
     });
 };
 
 /**
- * Gets item by id
+ * Gets single item by id
  */
-function getById(req, res) 
+function getById(req: any, res: any) 
 {
     console.log("In Item GetbyId!");
-    Item.findOne({_id: req.params.id}).then((item) =>
+
+    Item.findById(req.params.id, (err: any, item: any) =>
     {
-        res.send(item);
-    })
-    .catch((e) =>
-    {
-        res.send(e);
+        if (err)
+        {
+            res.send(err);
+        }
+        else
+        {
+            res.send(item);
+        }
     });
 };
 
 /**
  * Create an item for specific user
  */
-function _create(req, res)
+function _create(req: any, res: any)
 {
     console.log("In Item Create!");
 
     let newItem = new Item(req.body);
     
-    Item.create(newItem).then((item) =>
+    Item.create(newItem, (err: any, item: any) =>
     {
-        res.status(200).send(item);
-    })
-    .catch((e) =>
-    {
-        res.status(400).send(e);
+        if (err)
+        {
+            res.status(400).send(err);
+        }
+        else
+        {
+            res.status(200).send(item);
+        }
     });
 };
 
 /**
  * Update an item for specific user
  */
-function update(req, res)
+function update(req: any, res: any)
 {
     console.log("In Item Update!");
 
     Item.findOneAndUpdate(
+        req.body.id,
+        {$set: req.body.item},
+        (err: any, item: any) =>
+    {
+        if (err)
         {
-            _id: req.body.id
-        },
-        {
-            $set: req.body.item
+            res.status(400).send(err);
         }
-    )
-    .then((item) =>
-    {
-        res.status(200).send(`Item updated with id: ${req.body.id}`);
-    })
-    .catch((e) =>
-    {
-        res.status(400).send(e);
+        else
+        {
+            res.status(200).send(`Item updated with id: ${req.body.id}`);
+        }        
     });
 };
 
 /**
  * Delete an item for specific user
  */
-function _delete(req, res)
+function _delete(req: any, res: any)
 {
     console.log("In Item Delete!");
-    Item.findOneAndRemove(
+    Item.findByIdAndDelete(req.params.id, (err: any, rmDoc: any) => 
         {
-            _id: req.params.id  
-        })
-        .then((rmDoc) => 
-        {
-            deleteOwnedItem(rmDoc._id);
-            res.send(rmDoc);
-        })
+            if (err)
+            {
+                res.send(err);
+            }
+            else
+            {
+                deleteOwnedItem(rmDoc._id);
+                res.send(rmDoc);
+            }
+        });
 };
 
 /***** HELPER METHOD ********/
@@ -118,14 +133,18 @@ function _delete(req, res)
  * 
  * @param {*} id 
  */
-let deleteOwnedItem = (owner_id) =>
+let deleteOwnedItem = (owner_id: any) =>
 {
     console.log("In Delete Owner Items!");
-    Item.deleteMany(
+    Item.deleteMany(owner_id, (err: any) =>
         {
-            owner_id
-        }).then(() =>
-        {
-            console.log(`Items owned by ${owner_id} were deleted!`);
+            if (err)
+            {
+                console.log(`Items owned by ${owner_id} FAILED to delete!`);
+            }
+            else
+            {
+                console.log(`Items owned by ${owner_id} were deleted!`);
+            }
         });
 }

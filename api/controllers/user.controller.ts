@@ -1,8 +1,6 @@
-/**
- * LOAD MONGOOSE MODELS
- */
+import { Request, Response} from "express";
 import { User } from '../db/models'
-import express = require('express');
+import express = require("express");
 const mid = require('./middleware');
 
 export const router = express.Router(); 
@@ -23,16 +21,16 @@ router.delete('/:id', mid.authenticate, _delete);
  * @param {*} res 
  * @param {*} next 
  */
-function auth(req, res)
+function auth(req: any, res: Response)
 {
     console.log("In User Auth!");
 		
     //User is authenticated, user_id and user object available
-    req.userObject.generateAccessAuthToken().then((accessToken) =>
+    req.userObject.generateAccessAuthToken().then((accessToken: string | string[] | undefined) =>
     {
         res.header('x-access-token', accessToken).send({accessToken});
     })
-    .catch((e) =>
+    .catch((e: any) =>
     {
         res.status(400).send(e);
     });
@@ -41,16 +39,20 @@ function auth(req, res)
 /**
  * Gets simple message to show it's working from browser
  */
-function getAll(req, res) 
+function getAll(req: Request, res: Response) 
 {
     console.log("In All User Get!");
-    User.find().then((loca) =>
+
+    User.find((err: any, users: any) =>
     {
-        res.send(loca);
-    })
-    .catch((e) =>
-    {
-        res.send(e);
+        if (err)
+        {
+            res.send(err);
+        }
+        else
+        {
+            res.send(users);
+        }
     });
 };
 
@@ -58,30 +60,37 @@ function getAll(req, res)
 /**
  * Gets user by id
  */
-function getById(req, res) 
+function getById(req: Request, res: Response) 
 {
-    console.log("In User Get!");
-    User.findOne({_id: req.params.id}).then((user) =>
+    console.log("In User Get!")
+
+    User.findById(req.params.id, (err: any, user: any) =>
     {
-        res.send(user);
-    })
-    .catch((e) =>
-    {
-        res.send(e);
+        if (err)
+        {
+            res.send(err);
+        }
+        else
+        {
+            res.send(user);
+        }
     });
 };
 
 /**
  * Delete a location for specific user
  */
-function _delete(req, res)
+function _delete(req: Request, res: Response)
 {
-    User.findOneAndRemove(
+    User.deleteOne({_id: req.params.id}, (err: any) => 
         {
-            _id: req.params.id  
-        })
-        .then((rmDoc) => 
-        {
-            res.send(rmDoc);
+            if (err)
+            {
+                res.send(err);
+            }
+            else
+            {
+                res.send("Successfully Deleted User");
+            }
         })
 };

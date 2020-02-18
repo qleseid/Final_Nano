@@ -1,14 +1,15 @@
 //Model of user info
-import { model, Schema, Document, Model } from 'mongoose';
+import * as mongoose from "mongoose";
 import { ranStrSec } from '../../server.config'
 
 //const mong = require('mongoose');
-import * as _ from 'lodash/omit';
-import * as jwt from 'jsonwebtoken';
+import _ from "lodash";
+import * as jwt from "jsonwebtoken";
 import * as crypto from 'crypto';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from "bcryptjs";
+import { User } from ".";
 
-export interface IUserModel extends Model<any> 
+export interface IUserInterface extends mongoose.Document 
 {
     id: string;
     username: string;
@@ -17,27 +18,23 @@ export interface IUserModel extends Model<any>
     password: string;
     email: string;
     sessions: [];
-    // getJWTSecret: () => string;
-    createSession: () => string;
+    toJSON: () => any;
+    createSession: () => any;
     generateAccessAuthToken: () => any;
     generateRefreshAuthToken: () => any;
-    findByIdAndToken: (_id, refreshToken) => Promise<any>;
-    findByCredentials: (username, password) => any;
-    getJWTSecret: () => string;
-    hasRefreshTokenExpired: (expiresAt) => boolean;
 }
 
-/*
-interface IUserModel extends Model<IUserDoc>
+
+interface IUserModelInterface extends mongoose.Model<IUserInterface>
 {
-    findByIdAndToken: (_id, refreshToken) => Promise<any>;
-    findByCredentials: (username, password) => any;
+    findByCredentials: (username: string, password: string) => any;
+    findByIdAndToken: (_id: any, refreshToken: any) => any;
+    hasRefreshTokenExpired: (expiresAt: any) => boolean;
     getJWTSecret: () => string;
-    hasRefreshTokenExpired: (expiresAt) => boolean;
 }
-*/
 
-export var UserSchema: Schema = new Schema<IUserModel>(
+
+export const UserSchema = new mongoose.Schema(
     {
         // _id: mong.Schema.Types.ObjectId,
         username:
@@ -94,28 +91,16 @@ export var UserSchema: Schema = new Schema<IUserModel>(
 );
 
 /* Instance Methods */
-UserSchema.methods.toJSON = function()
+UserSchema.methods.toJSON = function(): any
 {
     const user = this;
     const userObject = user.toObject();
 
     //return the document except the password and session
-    return _(userObject, ['password', 'sessions']);
+    return _.omit(userObject, ['password', 'sessions']);
 }
 
-UserSchema.methods.getJWTSecret = function(): string
-{
-    try
-    {
-        return ranStrSec;
-    }
-    catch(err)
-    {
-        console.log("JWT secret get error");
-    }
-}
-
-UserSchema.methods.generateAccessAuthToken = function() 
+UserSchema.methods.generateAccessAuthToken = function(): any
 {
     const user = this;
     return new Promise((resolve, reject) =>
@@ -125,7 +110,7 @@ UserSchema.methods.generateAccessAuthToken = function()
             {_id: user._id.toHexString()},
             ranStrSec,
             { expiresIn: "15m"},
-            (err, token) =>
+            (err: any, token: any) =>
             {
                  if(!err)
                 {
@@ -140,11 +125,11 @@ UserSchema.methods.generateAccessAuthToken = function()
     })
 }
 
-UserSchema.methods.generateRefreshAuthToken = function()
+UserSchema.methods.generateRefreshAuthToken = function(): any
 {
     return new Promise((resolve, reject) => 
     {
-        crypto.randomBytes(64, (err, buf) =>
+        crypto.randomBytes(64, (err: any, buf: any) =>
         {
             if(!err)
              {
@@ -155,18 +140,18 @@ UserSchema.methods.generateRefreshAuthToken = function()
     })
 }
 
-UserSchema.methods.createSession = function()
+UserSchema.methods.createSession = function(): any
 {
     let user = this;
-    return user.generateRefreshAuthToken().then((refreshToken) =>
+    return user.generateRefreshAuthToken().then((refreshToken: any) =>
     {
         return saveSessionToDatabase(user, refreshToken);
     })
-    .then((refreshToken) =>
+    .then((refreshToken: any) =>
     {
         return refreshToken;
     })
-    .catch((e) =>
+    .catch((e: any) =>
     {
         return Promise.reject("Faided to save session to database.\n" + e);
     })
@@ -175,7 +160,14 @@ UserSchema.methods.createSession = function()
 
 /** MODEL METHODS statics **/
 
-UserSchema.statics.findByIdAndToken = function(id, token): any
+
+UserSchema.statics.getJWTSecret = function(): string
+{
+    return ranStrSec;
+    
+}
+
+UserSchema.statics.findByIdAndToken = function(id: any, token: any): any
 {
     const User = this;
 
@@ -186,12 +178,12 @@ UserSchema.statics.findByIdAndToken = function(id, token): any
         });
 }
 
-UserSchema.statics.findByCredentials = function(username, password)
+UserSchema.statics.findByCredentials = function(username: string, password: string): any
 {
     console.log("In Credential Find!");
-
     let User = this;
-    return User.findOne({username}).then((user) =>
+
+    return User.findOne({username}).then((user: any) =>
     {
         if(!user) //No user found
         {
@@ -200,7 +192,7 @@ UserSchema.statics.findByCredentials = function(username, password)
         }
         return new Promise((resolve, reject) => //User found
         {
-            bcrypt.compare(password, user.password, (err, res) => 
+            bcrypt.compare(password, user.password, (err: any, res: any) => 
             {
                 if(res)
                 {
@@ -216,7 +208,7 @@ UserSchema.statics.findByCredentials = function(username, password)
     })
 }
 
-UserSchema.statics.hasRefreshTokenExpired = (expiresAt): boolean =>
+UserSchema.statics.hasRefreshTokenExpired = (expiresAt: any): boolean =>
 {
     let secondsSinceEpoch = Date.now() / 1000;
     if(expiresAt > secondsSinceEpoch)
@@ -234,7 +226,7 @@ UserSchema.statics.hasRefreshTokenExpired = (expiresAt): boolean =>
 /** MIDDLEWARE **/
 
 //Before user is saved
-UserSchema.pre('save', function(next)
+UserSchema.pre('save', function(next: mongoose.HookNextFunction)
 {
     let User: any = this;
     let costFact = 10;
@@ -244,9 +236,9 @@ UserSchema.pre('save', function(next)
     if(User.isModified('password'))
     {
         //Generate salt and hash
-        bcrypt.genSalt(costFact, (err, salt) =>
+        bcrypt.genSalt(costFact, (err: any, salt: any) =>
         {
-            bcrypt.hash(User.password, salt, (err, hash) =>
+            bcrypt.hash(User.password, salt, (err: any, hash: any) =>
             {
                 console.log("In User Pre Hash:");
                 User.password = hash;
@@ -263,7 +255,7 @@ UserSchema.pre('save', function(next)
 
 /** HELPERS **/
 
-let saveSessionToDatabase = (user, refreshToken) => 
+let saveSessionToDatabase = (user: any, refreshToken: any) => 
 {
     //Save session to database
     return new Promise((resolve, reject) =>
@@ -277,7 +269,7 @@ let saveSessionToDatabase = (user, refreshToken) =>
         {
             return resolve(refreshToken);
         })
-        .catch((e) =>
+        .catch((e: any) =>
         {
             reject(e);
         })
@@ -291,4 +283,5 @@ let generateRefreshTokenExpireTime = () =>
     return ((Date.now() / 1000) + secondUntilExpire);
 }
 
-export default model<IUserModel & Document>("User", UserSchema);
+//This took 13 days to figure out. Thank you StackOverflow, no thank you Mongoose!
+export default mongoose.model<IUserInterface, IUserModelInterface>("User", UserSchema);
