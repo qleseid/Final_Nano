@@ -1,10 +1,9 @@
-import { Model } from 'mongoose';
 //Model of storage locations
-import { model, Schema, Document } from 'mongoose';
+import * as mongoose from "mongoose";
 
 //const mong = require('mongoose');
 
-interface IItemModel extends Model<any> 
+export interface IItemInterface extends mongoose.Document
 {
     id: string;
     owner_id: string;
@@ -14,7 +13,12 @@ interface IItemModel extends Model<any>
     created: Date;
 }
 
-export const ItemSchema: Schema = new Schema<IItemModel>(
+interface IItemModelInterface extends mongoose.Model<IItemInterface>
+{
+    //Nothing yet
+}
+
+export const ItemSchema = new mongoose.Schema(
     {
         // _id: mong.Schema.Types.ObjectId,
         owner_id:
@@ -48,4 +52,4 @@ export const ItemSchema: Schema = new Schema<IItemModel>(
     });
         
 
-export default model<IItemModel & Document>('Item', ItemSchema);
+export default mongoose.model<IItemInterface, IItemModelInterface>('Item', ItemSchema);
