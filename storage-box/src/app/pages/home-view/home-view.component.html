@@ -3,7 +3,7 @@
     <!--*********** SIDE BAR **********-->
     <div class="sidebar has-background-white">
       <h1 class="title has-text-primary">
-        Locations
+        Items
       </h1>
       <div class="selectable-area">
 
@@ -13,12 +13,12 @@
             background: (i + 1) % 2 == 0 ? 'burlywood' : 'lightsteelblue'}">
           <figure class="media-left">
             <p class="image is-64x64">
-              <img #img src="{{ item.img }}" />
+              <img #img src="{{item.file_path}}" />
             </p>
           </figure>
           <div class="media-content">
             <div class="content">
-              <p #title>{{ item.title }}{{ i + 1 }}</p>
+              <p #title>{{ item.title }}</p>
             </div>
           </div>
         </article>
@@ -107,17 +107,15 @@
       </div>
 
     <!--*********** MAIN AREA CONTENT **********-->
-      <div class="desc-title-area has-background-white">
-        <p>{{ selectedTitle }}</p>
-      </div>
+    <app-selected *ngIf="homeView"
+      [selectedImg]="selectedImg"
+      [selectedTitle]="selectedTitle"
+      [selectedDesctip]="selectedDesctip">
+    </app-selected>
 
-      <div class="selected-img image is-16by9">
-        <img src="{{ selectedImg }}" alt="Item" width="720" height="720" />
-      </div>
-
-      <textarea class="desc-text-area has-background-white">{{
-        selectedDesctip
-      }}</textarea>
+    <app-new-item *ngIf="!homeView">
+  </app-new-item>
+  
     </div>
   </div>
 </div>

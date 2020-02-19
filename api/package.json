@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "run": "ts-node-dev --respawn server.ts",
-    "go": "tsc \"npm run tsc:w\" server.ts",
+    "go": "\"npm run tsc:w\" node dist/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript, Node\" -c \"yello.bold, cyan.bold\" \"npm run tsc:w\" \"npm run watch-node\"",
     "watch-node": "node dist/server.js",
@@ -40,6 +40,8 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "@types/q": "^1.5.2"
+    "@types/multer": "^1.4.2",
+    "@types/q": "^1.5.2",
+    "multer": "^1.4.2"
   }
 }

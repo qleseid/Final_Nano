@@ -1,13 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * LOAD MONGOOSE MODELS
- */
 const models_1 = require("../db/models");
-//const { User } = require('../db/models');
+// const { User } = require('../db/models');
 //const { Login } = require('../db/models');
 //const { Location } = require('../db/models');
-const Q = require("q");
+const q_1 = __importDefault(require("q"));
 const express = require("express");
 exports.router = express.Router();
 // const { mong } = require('../db/mongoose');
@@ -84,7 +84,7 @@ function login(req, res) {
  * @param body
  */
 function checkUser(username) {
-    let def = new Q.defer();
+    let def = q_1.default.defer();
     console.log("In Check User!");
     models_1.User.findOne({ username }, (err, user) => {
         console.log("In Check User FindOne!");

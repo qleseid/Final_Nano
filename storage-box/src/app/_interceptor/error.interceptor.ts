@@ -23,6 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any>
   {
+    console.log("Error Interceptor");
     // Handle the request
     request = this.addAuthHeader(request);
 
@@ -35,7 +36,7 @@ export class ErrorInterceptor implements HttpInterceptor
         if (error.status === 401)
         {
           // 401 error so we are unauthorized
-
+          console.log("Response 401 Error Interceptor");
           // refresh the access token
           return this.refreshAccessToken()
             .pipe(
@@ -60,6 +61,7 @@ export class ErrorInterceptor implements HttpInterceptor
 
   refreshAccessToken()
   {
+    console.log("Error Interceptor: Refresh Access");
     if (this.refreshingAccessToken)
     {
       return new Observable(observer =>
@@ -92,6 +94,7 @@ export class ErrorInterceptor implements HttpInterceptor
   {
     // get the access token
     const token = this.authService.getAccessToken();
+    console.log("Add Auth Error Interceptor" + token);
 
     if (token)
     {

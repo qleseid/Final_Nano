@@ -70,6 +70,7 @@ export class AuthenticationService
 
   private setSession(userId: string, accessToken: string, refreshToken: string)
   {
+    localStorage.setItem("owner", userId);
     localStorage.setItem("user-id", userId);
     localStorage.setItem("x-access-token", accessToken);
     localStorage.setItem("x-refresh-token", refreshToken);
@@ -77,6 +78,7 @@ export class AuthenticationService
 
   private removeSession()
   {
+    localStorage.removeItem("owner");
     localStorage.removeItem("user-id");
     localStorage.removeItem("x-access-token");
     localStorage.removeItem("x-refresh-token");

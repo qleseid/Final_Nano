@@ -12,20 +12,19 @@ export class ItemService {
 
     getAll(owner: string)
     {
-        return this.http.get<any[]>(`${appConfig.apiUrl}/item/all` + owner);
+        return this.http.get<any[]>(`${appConfig.apiUrl}/item/${owner}/all`);
     }
 
     getById(id: string)
     {
-        return this.http.get(`${appConfig.apiUrl}/item` + id);
+        return this.http.get(`${appConfig.apiUrl}/item/${id}`);
     }
 
-    create(item: any, owner: string)
+    create(item: any)
     {
         return this.http.post(`${appConfig.apiUrl}/item`,
         {
-          item,
-          owner
+          item
         },
         {
           observe: "response"

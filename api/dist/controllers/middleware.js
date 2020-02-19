@@ -12,13 +12,7 @@ exports.verify = function (req, res, next) {
     //Get _id from header
     let _id = req.header('_id');
     let users = new models_1.User();
-    //console.log("Found ID: " + _id);
-    //console.log("Found ID: " + req.query._id);
-    //console.log("Found token: " + req.query.xrefreshtoken);
-    //console.log("Found token: " + refreshToken);
     models_1.User.findByIdAndToken(_id, refreshToken).then((user) => {
-        //console.log("Found user Token: " + user.sessions[0].token);
-        //console.log("Found RefreshToken: " + refreshToken);
         if (!user) {
             return Promise.reject({
                 "error": "User not found! Ensure token and id are correct"
@@ -26,12 +20,14 @@ exports.verify = function (req, res, next) {
         }
         //User was found if this is reached
         //Valid session
+        //Temp test, remove if nothing changes.
+        req.params.user_id = user._id;
         req.user_id = user._id;
         users = user;
         req.userObject = users;
         req.refreshToken = refreshToken;
-        //console.log("user: " + user);
-        //console.log("userObject: " + req.userObject);
+        console.log("Request params: " + req.params.user_id);
+        console.log("Req any params: " + req.user_id);
         let isSessionValid = false;
         user.sessions.forEach((session) => {
             if (session.token === refreshToken) {
@@ -56,16 +52,18 @@ exports.verify = function (req, res, next) {
 };
 // check whether the request has a valid JWT access token
 exports.authenticate = function (req, res, next) {
-    console.log("In Middle authenticate!");
     let token = req.header('x-access-token');
+    console.log("In Middle authenticate! " + token);
     // verify the JWT
     jsonwebtoken_1.default.verify(token, models_1.User.getJWTSecret(), (err, decoded) => {
         if (err) {
+            console.log("In Middle authenticate Error!");
             // there was an error
             // jwt is invalid - * DO NOT AUTHENTICATE *
             res.status(401).send(err);
         }
         else {
+            console.log("In Middle authenticate Next!");
             // jwt is valid
             req.user_id = decoded._id;
             next();

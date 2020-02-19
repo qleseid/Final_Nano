@@ -15,6 +15,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthenticationService, AlertService } from "./_services";
 import { AlertComponent } from "./_interceptor/alert.component";
 import { LoginFormComponent } from "./pages/login/login-form/login-form/login-form.component";
+import { SelectedComponent } from "./pages/home-view/selected/selected.component";
+import { NewItemComponent } from "./pages/home-view/new-item/new-item.component";
+import { FileSelectDirective } from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { LoginFormComponent } from "./pages/login/login-form/login-form/login-fo
     LoginComponent,
     RegisterComponent,
     AlertComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    SelectedComponent,
+    NewItemComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
@@ -32,7 +38,7 @@ import { LoginFormComponent } from "./pages/login/login-form/login-form/login-fo
     FormsModule
   ],
   providers: [
-    ErrorInterceptor,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     AuthGuard,
     AlertService,
     AuthenticationService,

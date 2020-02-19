@@ -1,13 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * LOAD MONGOOSE MODELS
- */
 const models_1 = require("../db/models");
 const express = require("express");
 const mid = require('./middleware');
 exports.router = express.Router();
-// const { mong } = require('../db/mongoose');
 /* LOCATION ROUTES */
 exports.router.get('/me/access-token', mid.verify, auth);
 exports.router.get('/all', mid.authenticate, getAll);
@@ -15,9 +11,6 @@ exports.router.get('/:id', mid.authenticate, getById);
 exports.router.delete('/:id', mid.authenticate, _delete);
 /** AUTHENTICATE
  *
- * @param {*} req
- * @param {*} res
- * @param {*} next
  */
 function auth(req, res) {
     console.log("In User Auth!");
@@ -34,11 +27,13 @@ function auth(req, res) {
  */
 function getAll(req, res) {
     console.log("In All User Get!");
-    models_1.User.find().then((loca) => {
-        res.send(loca);
-    })
-        .catch((e) => {
-        res.send(e);
+    models_1.User.find((err, users) => {
+        if (err) {
+            res.send(err);
+        }
+        else {
+            res.send(users);
+        }
     });
 }
 ;
@@ -47,11 +42,13 @@ function getAll(req, res) {
  */
 function getById(req, res) {
     console.log("In User Get!");
-    models_1.User.findOne({ _id: req.params.id }).then((user) => {
-        res.send(user);
-    })
-        .catch((e) => {
-        res.send(e);
+    models_1.User.findById(req.params.id, (err, user) => {
+        if (err) {
+            res.send(err);
+        }
+        else {
+            res.send(user);
+        }
     });
 }
 ;
@@ -59,11 +56,13 @@ function getById(req, res) {
  * Delete a location for specific user
  */
 function _delete(req, res) {
-    models_1.User.findOneAndRemove({
-        _id: req.params.id
-    })
-        .then((rmDoc) => {
-        res.send(rmDoc);
+    models_1.User.deleteOne({ _id: req.params.id }, (err) => {
+        if (err) {
+            res.send(err);
+        }
+        else {
+            res.send("Successfully Deleted User");
+        }
     });
 }
 ;

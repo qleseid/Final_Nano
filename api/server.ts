@@ -1,6 +1,5 @@
-// const cors = require('cors');
-import { router as location } from './controllers/location.controller';
 import { router as login } from './controllers/login.controller';
+import { router as image } from './controllers/image.controller';
 import { router as users } from './controllers/user.controller';
 import { router as item } from './controllers/item.controller';
 import { mongDb } from './server.config'
@@ -11,9 +10,7 @@ import express from "express";
 const port = process.env.NODE_ENV === 'production' ? 80 : 3000;
 const app = express();
 
-/**
-* LOAD MONGOOSE
-*/
+/*********** LOAD MONGOOSE **********/
 
 mongoose.connect(
     mongDb,
@@ -38,17 +35,17 @@ mongoose.connect(
     mongoose.set('useCreateIndex', true);
     mongoose.set('useFindAndModify', false);
 
-/**
-* LOAD MIDDLEWARE
-*/
-/** MIDDLEWARE**/
-//app.use(cors());
+    
+/********** MIDDLEWARE *************/
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+// Set static folder
+app.use(express.static("./uploads"));
 
 // CORS HEADERS MIDDLEWARE
 app.use(function (req: any, res: any, next: any) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://10.0.0.191:4200");
     res.header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, _id");
 
@@ -56,22 +53,23 @@ app.use(function (req: any, res: any, next: any) {
         'Access-Control-Expose-Headers',
         'x-access-token, x-refresh-token'
     );
+    res.header(
+        'Access-Control-Allow-Credentials', 'true');
 
     next();
 });
 
 
-/** END OF MIDDLEWARE **/
+/********* END OF MIDDLEWARE *********/
 
 /************* ROUTE HANDLERS *******************/
 
-app.use('/loca', location);
 app.use('/', login);
-
-app.use('/users', users);
 app.use('/item', item);
+app.use('/users', users);
+app.use('/api', image);
 
-// error handler
+/******** ERROR HANDLER ***********/
 app.use(function (err: any, req: any, res: any, next: any) 
 {
     if (err.name === 'UnauthorizedError') 
@@ -90,7 +88,7 @@ app.use(function (err: any, req: any, res: any, next: any)
  * 
  * Port the server listens for requests on
  */
-app.listen(port, () =>
+app.listen(port, "0.0.0.0", () =>
 {
     console.log(`Server running and listening on port ${port}`);
 })

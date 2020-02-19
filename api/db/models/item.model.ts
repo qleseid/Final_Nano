@@ -1,7 +1,4 @@
-//Model of storage locations
 import * as mongoose from "mongoose";
-
-//const mong = require('mongoose');
 
 export interface IItemInterface extends mongoose.Document
 {

@@ -1,13 +1,11 @@
 ﻿<div class="container is-fluid">
-    <div class="notification has-background-grey-light">
-<div class="centered-content">
-  <div class="home-container">
-    <div class="home-selected-container has-background-light">
-  <h2 class="title">Login</h2>
-  <app-login-form
-  (sendForm)="login($event)"
-  [loading]='loading'></app-login-form>
-</div>
-</div>
-</div>
-</div>
+  <div class="notification has-background-grey-light">
+    <div class="centered-content">
+      <div class="home-container">
+        <div class="home-selected-container has-background-light">
+          <h2 class="title">Login</h2>
+          <app-login-form (sendForm)="login($event)" [loading]='loading'></app-login-form>
+        </div>
+      </div>
+    </div>
+  </div>

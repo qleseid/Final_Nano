@@ -1,8 +1,14 @@
 "use strict";
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-//Model of storage locations
-const mongoose_1 = require("mongoose");
-exports.ItemSchema = new mongoose_1.Schema({
+const mongoose = __importStar(require("mongoose"));
+exports.ItemSchema = new mongoose.Schema({
     // _id: mong.Schema.Types.ObjectId,
     owner_id: {
         // type: mong.Schema.Types.ObjectId,
@@ -28,4 +34,4 @@ exports.ItemSchema = new mongoose_1.Schema({
         default: Date.now
     }
 });
-exports.default = mongoose_1.model('Item', exports.ItemSchema);
+exports.default = mongoose.model('Item', exports.ItemSchema);

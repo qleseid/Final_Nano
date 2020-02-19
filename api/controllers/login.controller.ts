@@ -1,3 +1,4 @@
+import { IUserInterface } from './../db/models/user.model';
 import  {User}  from "../db/models";
 // const { User } = require('../db/models');
 //const { Login } = require('../db/models');

@@ -11,16 +11,9 @@ exports.verify = function (req: any, res: any, next: any)
     //Get _id from header
     let _id = req.header('_id');
 	let users = new User();
-
-	//console.log("Found ID: " + _id);
-	//console.log("Found ID: " + req.query._id);
-	//console.log("Found token: " + req.query.xrefreshtoken);
-    //console.log("Found token: " + refreshToken);
     
     User.findByIdAndToken(_id, refreshToken).then((user: IUserInterface) =>
     {		
-		//console.log("Found user Token: " + user.sessions[0].token);
-		//console.log("Found RefreshToken: " + refreshToken);
 		
         if(!user)
         {
@@ -32,15 +25,16 @@ exports.verify = function (req: any, res: any, next: any)
 
         //User was found if this is reached
         //Valid session
-
-		// req.params.user_id = user._id;
+        //Temp test, remove if nothing changes.
+        req.params.user_id = user._id;
+        
         req.user_id = user._id;
 		users = user;
         req.userObject = users;
         req.refreshToken = refreshToken;
 
-		//console.log("user: " + user);
-		//console.log("userObject: " + req.userObject);
+		console.log("Request params: " + req.params.user_id);
+		console.log("Req any params: " + req.user_id);
 		
         let isSessionValid = false;
 
@@ -77,20 +71,22 @@ exports.verify = function (req: any, res: any, next: any)
 // check whether the request has a valid JWT access token
 exports.authenticate = function (req: any, res: any, next: any)
 {
-    console.log("In Middle authenticate!");
     let token = req.header('x-access-token');
+    console.log("In Middle authenticate! " + token);
 
     // verify the JWT
     jwt.verify(token, User.getJWTSecret(), (err: any, decoded: any) => 
     {
         if (err) 
         {
+            console.log("In Middle authenticate Error!");
             // there was an error
             // jwt is invalid - * DO NOT AUTHENTICATE *
             res.status(401).send(err);
         } 
         else 
         {
+            console.log("In Middle authenticate Next!");
             // jwt is valid
             req.user_id = decoded._id;
             next();

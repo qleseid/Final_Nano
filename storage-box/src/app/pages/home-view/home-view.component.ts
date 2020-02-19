@@ -1,3 +1,5 @@
+import { IItemInterface } from "./../../../../../api/db/models/item.model";
+import { ItemService } from "./../../_services/item.service";
 import { Component, OnInit } from "@angular/core";
 
 @Component({
@@ -7,108 +9,58 @@ import { Component, OnInit } from "@angular/core";
 })
 export class HomeViewComponent implements OnInit
 {
-  items: any[] = [
-    {
-      img: "../assets/img/deadpool.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/harley.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/empty.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/harley.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/deadpool.jpg",
-      title : "Item #"
-    },
-    {
-      img: "https://bulma.io/images/placeholders/128x128.png",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/harley.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/deadpool.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/harley.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/empty.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/harley.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/deadpool.jpg",
-      title : "Item #"
-    },
-    {
-      img: "https://bulma.io/images/placeholders/128x128.png",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/harley.jpg",
-      title : "Item #"
-    },
-    {
-      img: "../assets/img/deadpool.jpg",
-      title : "Item #"
-    },
-    {
-      img: "https://bulma.io/images/placeholders/128x128.png",
-      title : "Item #"
-    },
-    {
-      img: "https://bulma.io/images/placeholders/128x128.png",
-      title : "Item #"
-    }
-];
+  items: IItemInterface[];
+  homeView = true;
 
 selectedImg = "../assets/img/empty.jpg";
 selectedTitle = "NO TITLE YET";
 selectedDesctip = "NO DESCRIPTION YET";
 
 
-  constructor() { }
+  constructor(
+    private itemService: ItemService
+  )
+  {}
 
-  ngOnInit() {
+
+  ngOnInit(): void
+  {
+    this.getItems();
+  }
+
+  getItems(): void
+  {
+    // The owner's id is stored in local storage for use here
+
+    this.itemService.getAll(localStorage.getItem("owner"))
+    .subscribe(items =>
+      {
+        console.log("Got Items: " + items[0].file_path);
+        this.items = items;
+      });
   }
 
   itemClicked(item: any, i: number)
   {
-    this.selectedImg = item.img;
-    this.selectedTitle = item.title + "" + (i + 1);
-    console.log("Item Clicked: " + this.selectedImg + " | " + this.selectedTitle);
+    this.selectedImg = item.file_path;
+    this.selectedTitle = item.title;
+    this.selectedDesctip = item.description;
+    console.log("Item  #" + (i + 1) + " Clicked: " + this.selectedImg + " | " + this.selectedTitle);
   }
   newItemClick()
   {
-      console.log("New Item Clicked");
-
+    this.homeView = false;
+    console.log("New Item Clicked");
   }
 
   deleteItemClick()
   {
     console.log("Delete Item Clicked");
-
   }
 
   updateItemClick()
   {
+    this.homeView = true;
     console.log("Update Item Clicked");
-
   }
 }

@@ -1,11 +1,10 @@
 import { Request, Response} from "express";
-import { User } from '../db/models'
+import { User } from '../db/models';
 import express = require("express");
+
 const mid = require('./middleware');
 
 export const router = express.Router(); 
-
-// const { mong } = require('../db/mongoose');
 
 /* LOCATION ROUTES */
 
@@ -17,9 +16,6 @@ router.delete('/:id', mid.authenticate, _delete);
 
 /** AUTHENTICATE
  * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
  */
 function auth(req: any, res: Response)
 {

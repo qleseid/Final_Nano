@@ -1,13 +1,9 @@
-//Model of user info
-import * as mongoose from "mongoose";
 import { ranStrSec } from '../../server.config'
-
-//const mong = require('mongoose');
-import _ from "lodash";
+import * as mongoose from "mongoose";
 import * as jwt from "jsonwebtoken";
-import * as crypto from 'crypto';
 import * as bcrypt from "bcryptjs";
-import { User } from ".";
+import * as crypto from 'crypto';
+import _ from "lodash";
 
 export interface IUserInterface extends mongoose.Document 
 {

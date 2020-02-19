@@ -1,18 +1,13 @@
 import { IItemInterface, ItemSchema } from './../db/models/item.model';
-/**
- * LOAD MONGOOSE MODELS
- */
 import { Item } from '../db/models'
 import express = require('express');
+
 const mid = require('./middleware');
-
 export const router = express.Router(); 
-
-// const { mong } = require('../db/mongoose');
 
 /* LOCATION ROUTES */
 
-router.get('/all:owner', mid.authenticate, getAll);
+router.get('/:id/all', mid.authenticate, getAll);
 router.get('/:id', mid.authenticate, getById);
 router.post('/', mid.authenticate, _create);
 router.patch('/', mid.authenticate, update);
@@ -24,10 +19,11 @@ router.delete('/:id', mid.authenticate, _delete);
  */
 function getAll(req: any, res: any) 
 {
-    console.log("In All Item Get for: " + req.params.owner);
+    console.log("In All Item Get for: " + req.params.id);
+    console.log("Params: " + req.params.id);
 
     Item.find(
-        {owner_id: req.params.owner},
+        {owner_id: req.params.id},
         (err: any, items: IItemInterface) =>
     {
         if (err)
@@ -48,7 +44,9 @@ function getById(req: any, res: any)
 {
     console.log("In Item GetbyId!");
 
-    Item.findById(req.params.id, (err: any, item: any) =>
+    Item.findById(
+        req.params.id,
+        (err: any, item: any) =>
     {
         if (err)
         {
@@ -62,7 +60,7 @@ function getById(req: any, res: any)
 };
 
 /**
- * Create an item for specific user
+ * Create/save an item for specific user
  */
 function _create(req: any, res: any)
 {
@@ -70,11 +68,13 @@ function _create(req: any, res: any)
 
     let newItem = new Item(req.body);
     
-    Item.create(newItem, (err: any, item: any) =>
+    Item.create(
+        newItem,
+        (err: any, item: any) =>
     {
         if (err)
         {
-            res.status(400).send(err);
+            res.status(407).send(err);
         }
         else
         {
@@ -112,7 +112,9 @@ function update(req: any, res: any)
 function _delete(req: any, res: any)
 {
     console.log("In Item Delete!");
-    Item.findByIdAndDelete(req.params.id, (err: any, rmDoc: any) => 
+    Item.findByIdAndDelete(
+        req.params.id,
+        (err: any, rmDoc: any) => 
         {
             if (err)
             {
@@ -136,7 +138,9 @@ function _delete(req: any, res: any)
 let deleteOwnedItem = (owner_id: any) =>
 {
     console.log("In Delete Owner Items!");
-    Item.deleteMany(owner_id, (err: any) =>
+    Item.deleteMany(
+        owner_id,
+        (err: any) =>
         {
             if (err)
             {
@@ -147,4 +151,4 @@ let deleteOwnedItem = (owner_id: any) =>
                 console.log(`Items owned by ${owner_id} were deleted!`);
             }
         });
-}
+};

@@ -6,25 +6,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-//Model of user info
-const mongoose_1 = require("mongoose");
 const server_config_1 = require("../../server.config");
-//const mong = require('mongoose');
-const _ = __importStar(require("lodash/omit"));
+const mongoose = __importStar(require("mongoose"));
 const jwt = __importStar(require("jsonwebtoken"));
-const crypto = __importStar(require("crypto"));
 const bcrypt = __importStar(require("bcryptjs"));
-/*
-interface IUserModel extends Model<IUserDoc>
-{
-    findByIdAndToken: (_id, refreshToken) => Promise<any>;
-    findByCredentials: (username, password) => any;
-    getJWTSecret: () => string;
-    hasRefreshTokenExpired: (expiresAt) => boolean;
-}
-*/
-exports.UserSchema = new mongoose_1.Schema({
+const crypto = __importStar(require("crypto"));
+const lodash_1 = __importDefault(require("lodash"));
+exports.UserSchema = new mongoose.Schema({
     // _id: mong.Schema.Types.ObjectId,
     username: {
         type: String,
@@ -72,15 +64,7 @@ exports.UserSchema.methods.toJSON = function () {
     const user = this;
     const userObject = user.toObject();
     //return the document except the password and session
-    return _(userObject, ['password', 'sessions']);
-};
-exports.UserSchema.methods.getJWTSecret = function () {
-    try {
-        return server_config_1.ranStrSec;
-    }
-    catch (err) {
-        console.log("JWT secret get error");
-    }
+    return lodash_1.default.omit(userObject, ['password', 'sessions']);
 };
 exports.UserSchema.methods.generateAccessAuthToken = function () {
     const user = this;
@@ -120,6 +104,9 @@ exports.UserSchema.methods.createSession = function () {
     });
 };
 /** MODEL METHODS statics **/
+exports.UserSchema.statics.getJWTSecret = function () {
+    return server_config_1.ranStrSec;
+};
 exports.UserSchema.statics.findByIdAndToken = function (id, token) {
     const User = this;
     return User.findOne({
@@ -202,4 +189,5 @@ let generateRefreshTokenExpireTime = () => {
     let secondUntilExpire = ((daysUntilExpire * 24) * 60) * 60; // * 3600
     return ((Date.now() / 1000) + secondUntilExpire);
 };
-exports.default = mongoose_1.model("User", exports.UserSchema);
+//This took 13 days to figure out. Thank you StackOverflow, no thank you Mongoose!
+exports.default = mongoose.model("User", exports.UserSchema);
