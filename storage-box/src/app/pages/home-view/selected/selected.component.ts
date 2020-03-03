@@ -1,12 +1,13 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input, OnChanges } from "@angular/core";
 
 @Component({
   selector: "app-selected",
   templateUrl: "./selected.component.html",
   styleUrls: ["./selected.component.scss"]
 })
-export class SelectedComponent implements OnInit
+export class SelectedComponent implements OnChanges
 {
+  picture: boolean;
 
   @Input() selectedImg: string;
   @Input() selectedTitle: string;
@@ -14,7 +15,14 @@ export class SelectedComponent implements OnInit
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges()
+  {
+    // Video to video switching won't work without this
+    this.picture = true;
+    setTimeout(() =>
+    {
+      this.picture = !this.selectedImg.endsWith(".mp4");
+    }, 50);
   }
 
 }

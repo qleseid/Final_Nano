@@ -13,7 +13,14 @@
             background: (i + 1) % 2 == 0 ? 'burlywood' : 'lightsteelblue'}">
           <figure class="media-left">
             <p class="image is-64x64">
-              <img #img src="{{item.file_path}}" />
+
+              <img #img src="{{item.file_path}}" *ngIf="!item.file_path.endsWith('.mp4')"/>
+
+              <video width="64" height="64" controls *ngIf="item.file_path.endsWith('.mp4')">
+                <source src="{{ item.file_path }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+
             </p>
           </figure>
           <div class="media-content">
@@ -43,15 +50,15 @@
                 <a (click)="newItemClick()" class="dropdown-item">
                   New Item
                 </a>
-                <a (click)="updateItemClick()" class="dropdown-item">
-                  Update Item
+                <a (click)="viewSelectClick()" class="dropdown-item">
+                  View Selected
                 </a>
                 <hr class="dropdown-divider" />
-                <a (click)="deleteItemClick()" class="dropdown-item tag is-danger">
+                <a (click)="logout()" class="dropdown-item tag is-danger">
                   <span class="icon is-small">
                     <i class="fa fa-times"></i>
                   </span>
-                  <span>Delete Item</span>
+                  <span>Logout</span>
                 </a>
               </div>
             </div>
@@ -64,7 +71,7 @@
     <div class="home-selected-container has-background-grey-lighter">
       <div class="home-selected-top-bar">
         <h1 class="title has-text-primary">
-          Selected
+          {{selectedText}}
         </h1>
 
     <!--*********** MAIN AREA MENU **********-->
@@ -86,19 +93,17 @@
                   <a (click)="newItemClick()" class="dropdown-item">
                     New Item
                   </a>
-                  <a (click)="updateItemClick()" class="dropdown-item tag is-info">
-                    <span>
+                  <a (click)="updateItemClick()" class="dropdown-item">
                       Update Item
-                      <button class="delete is-medium"></button>
-                    </span>
                   </a>
                   <hr class="dropdown-divider" />
-                  <a (click)="deleteItemClick()" class="dropdown-item button is-danger">
-                    <span class="icon is-small">
-                      <i class="fa fa-times"></i>
-                    </span>
-                    <span>Delete Item</span>
-                  </a>
+                  <a (click)="deleteItemClick()"
+                    class="dropdown-item tag is-danger">
+                  <span class="icon is-small">
+                    <i class="fa fa-times"></i>
+                  </span>
+                  <span>Delete Item</span>
+                </a>
                 </div>
               </div>
             </div>
@@ -113,9 +118,10 @@
       [selectedDesctip]="selectedDesctip">
     </app-selected>
 
-    <app-new-item *ngIf="!homeView">
+    <app-new-item *ngIf="!homeView"
+    (uploadComplete)="viewSelectClick()">
   </app-new-item>
-  
+
     </div>
   </div>
 </div>

@@ -20,18 +20,16 @@ export class ItemService {
         return this.http.get(`${appConfig.apiUrl}/item/${id}`);
     }
 
-    create(item: any)
+    create(item: FormData)
     {
-        return this.http.post(`${appConfig.apiUrl}/item`,
-        {
-          item
-        },
-        {
-          observe: "response"
-        });
+      return this.http.post<any>(`${appConfig.apiUrl}/item`, item,
+      {
+        reportProgress: true,
+        observe: "events"
+      });
     }
 
-    patch(item: any, id: string)
+    patch(item: FormData, id: string)
     {
         return this.http.patch(`${appConfig.apiUrl}/item`,
         {
@@ -45,6 +43,6 @@ export class ItemService {
 
     delete(id: string)
     {
-        return this.http.delete(`${appConfig.apiUrl}/item` + id);
+        return this.http.delete(`${appConfig.apiUrl}/item/` + id);
     }
 }

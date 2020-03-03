@@ -52,6 +52,12 @@
   }
 }
 
+p.image {
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+}
+
 .home-selected-container {
   display: flex;
   flex-direction: column;

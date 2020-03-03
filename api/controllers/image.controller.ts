@@ -1,7 +1,7 @@
 import { IItemInterface, ItemSchema } from './../db/models/item.model';
 import { Item } from '../db/models'
 import multer from "multer";
-import path from "path";
+import fs from "fs";
 import express = require('express');
 
 const mid = require('./middleware');
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage: storage});
+export const upload = multer({storage: storage});
 
     
 /* LOCATION ROUTES */
@@ -36,6 +36,27 @@ router.post('/upload', upload.single('photo'), _create);
 router.patch('/upload', mid.authenticate, update);
 router.delete('/upload', mid.authenticate, _delete);
 
+// Removes actual image stored in ./uploads
+export const deleteImage = (file: string) =>
+{
+    console.log("In Image Delete");
+    console.log(file);
+    const fileP = file.split("3000/").pop();
+    const path = "./uploads/" + fileP;
+    console.log(path);
+
+    fs.unlink(path, (err) =>
+    {
+        if (err)
+        {
+            console.error(err)
+            return
+        }
+
+        //file removed
+    });
+
+};
 
 /**
  * Find all the items owned by specific id
@@ -124,7 +145,8 @@ function _create(req: any, res: any)
     }
     else
     {
-        console.log('file received');
+        console.log(req.file);
+        console.log("file received: " + req.file.path + " | " + req.file.filename);
         return res.send(
             {
                 success: true

@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 10.0.0.191",
+    "start-host": "ng serve --host 10.0.0.191",
+    "start": "ng serve",
     "go": "tsc && concurrently \"npm run tsc:w\" \"npm run start\" ",
+    "go-host": "tsc && concurrently \"npm run tsc:w\" \"npm run start-host\" ",
     "run": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "build": "ng build",
     "test": "ng test",

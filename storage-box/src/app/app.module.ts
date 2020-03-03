@@ -3,7 +3,9 @@ import { AuthGuard } from "./_guards/auth.guard";
 import { ErrorInterceptor } from "./_interceptor/error.interceptor";
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import {
+  FormsModule,
+  ReactiveFormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -35,6 +37,7 @@ import { FileSelectDirective } from "ng2-file-upload";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     FormsModule
   ],
   providers: [

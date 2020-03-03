@@ -1,6 +1,7 @@
 import { IItemInterface, ItemSchema } from './../db/models/item.model';
 import { Item } from '../db/models'
 import express = require('express');
+import { upload, deleteImage } from './image.controller';
 
 const mid = require('./middleware');
 export const router = express.Router(); 
@@ -9,7 +10,7 @@ export const router = express.Router();
 
 router.get('/:id/all', mid.authenticate, getAll);
 router.get('/:id', mid.authenticate, getById);
-router.post('/', mid.authenticate, _create);
+router.post('/', mid.authenticate, upload.single("photo"), _create);
 router.patch('/', mid.authenticate, update);
 router.delete('/:id', mid.authenticate, _delete);
 
@@ -65,22 +66,49 @@ function getById(req: any, res: any)
 function _create(req: any, res: any)
 {
     console.log("In Item Create!");
-
-    let newItem = new Item(req.body);
+    console.log(req.body.title);
+    console.log(req.body);
     
-    Item.create(
-        newItem,
-        (err: any, item: any) =>
+    const url = req.protocol + "://" + req.get('host') + "/";
+    console.log("URL: " + url);
+
+    if (!req.file) 
     {
-        if (err)
-        {
-            res.status(407).send(err);
-        }
-        else
-        {
-            res.status(200).send(item);
-        }
-    });
+        console.log("No file received");
+        return res.status(400).send(
+            {
+                success: false
+            });
+    }
+    else
+    {
+        console.log(req.file);
+        console.log("file received: " + req.file.path + " | " + req.file.filename);
+
+        let newItem = new Item(
+            {
+                owner_id: req.body.owner_id,
+                title: req.body.title,
+                description: req.body.description,
+                file_path: `${url}${req.file.filename}`
+            });
+
+        console.log(newItem);
+
+        Item.create(
+            newItem,
+            (err: any, item: any) =>
+            {
+                if (err)
+                {
+                    res.status(407).send(err);
+                }
+                else
+                {
+                    res.status(200).send(item);
+                }
+            });
+    }    
 };
 
 /**
@@ -123,6 +151,7 @@ function _delete(req: any, res: any)
             else
             {
                 deleteOwnedItem(rmDoc._id);
+                deleteImage(rmDoc.file_path);
                 res.send(rmDoc);
             }
         });
@@ -138,13 +167,14 @@ function _delete(req: any, res: any)
 let deleteOwnedItem = (owner_id: any) =>
 {
     console.log("In Delete Owner Items!");
-    Item.deleteMany(
+    Item.remove(
         owner_id,
         (err: any) =>
         {
             if (err)
             {
                 console.log(`Items owned by ${owner_id} FAILED to delete!`);
+                console.log(err);
             }
             else
             {
