@@ -2,6 +2,7 @@ import { IItemInterface, ItemSchema } from './../db/models/item.model';
 import { Item } from '../db/models'
 import express = require('express');
 import { upload, deleteImage } from './image.controller';
+import { ObjectID } from 'mongodb';
 
 const mid = require('./middleware');
 export const router = express.Router(); 
@@ -164,11 +165,13 @@ function _delete(req: any, res: any)
  * 
  * @param {*} id 
  */
-let deleteOwnedItem = (owner_id: any) =>
+let deleteOwnedItem = (owner_id: ObjectID) =>
 {
+    const strId = owner_id.toString();
+
     console.log("In Delete Owner Items!");
     Item.deleteMany(
-        owner_id,
+        { owner_id: strId },
         (err: any) =>
         {
             if (err)
