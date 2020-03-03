@@ -87,7 +87,7 @@ export class HomeViewComponent implements OnInit
         this.selectedDesctip = "ERROR";
         console.log(error.error);
         });
-      this.getItems();
+      this.viewSelectClick();
       console.log("Delete Item ID: " + this.selectedId);
       console.log("Delete Item Clicked");
     }
