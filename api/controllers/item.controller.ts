@@ -167,7 +167,7 @@ function _delete(req: any, res: any)
 let deleteOwnedItem = (owner_id: any) =>
 {
     console.log("In Delete Owner Items!");
-    Item.remove(
+    Item.deleteMany(
         owner_id,
         (err: any) =>
         {

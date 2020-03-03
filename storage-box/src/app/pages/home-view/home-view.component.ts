@@ -19,8 +19,8 @@ export class HomeViewComponent implements OnInit
 
   selectedId: string;
   selectedImg = "../assets/img/empty.jpg";
-  selectedTitle = "NO TITLE YET";
-  selectedDesctip = "NO DESCRIPTION YET";
+  selectedTitle = "SELECT AN ITEM TO THE LEFT";
+  selectedDesctip = "SELECT AN ITEM TO THE LEFT";
 
 
   constructor(
@@ -86,7 +86,8 @@ export class HomeViewComponent implements OnInit
         this.selectedTitle = "ERROR Deleting Item!";
         this.selectedDesctip = "ERROR";
         console.log(error.error);
-      });
+        });
+      this.getItems();
       console.log("Delete Item ID: " + this.selectedId);
       console.log("Delete Item Clicked");
     }

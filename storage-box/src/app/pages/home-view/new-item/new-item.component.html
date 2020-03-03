@@ -26,7 +26,7 @@
       formControlName="description"
     >
     </textarea>
-    
+
     <!-- Progress Bar -->
 
       <progress
@@ -44,7 +44,13 @@
       (change)="onFileSelect($event)"/>
     </div>
 
-    <img [src]="imgPre" height="200" *ngIf="imgPre">
+    <div class="preview" *ngIf="imgPre">
+      <img
+      [src]="imgPre"
+      height="200"
+      *ngIf="imgPre">
+    </div>
+
 
     <div>
       <button type="submit">Upload</button>
