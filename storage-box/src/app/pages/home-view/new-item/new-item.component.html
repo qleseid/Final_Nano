@@ -1,0 +1,53 @@
+<div class="app-selected">
+  <div>
+    <h2>Title:</h2>
+  </div>
+
+  <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+    <div class="desc-title-area has-background-white">
+      <input
+      placeholder="Enter Title Here"
+      type="text"
+      formControlName="title" />
+      <small
+        [hidden]="
+          uploadForm.controls.title.valid || uploadForm.controls.title.pristine
+        "
+      >
+        Title is required.
+      </small>
+    </div>
+
+    <h2>Description:</h2>
+    <textarea
+      placeholder="Enter Description Here"
+      class="desc-text-area has-background-white"
+      type="text"
+      formControlName="description"
+    >
+    </textarea>
+    
+    <!-- Progress Bar -->
+
+      <progress
+        class="progress is-success"
+        [value]="progress"
+        max="100"
+        *ngIf="progress > 0">
+        0%
+        </progress>
+
+    <div>
+      <input
+      type="file"
+      name="photo"
+      (change)="onFileSelect($event)"/>
+    </div>
+
+    <img [src]="imgPre" height="200" *ngIf="imgPre">
+
+    <div>
+      <button type="submit">Upload</button>
+    </div>
+  </form>
+</div>

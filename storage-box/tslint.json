@@ -3,6 +3,7 @@
   "rules": {
     "array-type": false,
     "arrow-parens": false,
+    "one-line":false,
     "deprecation": {
       "severity": "warning"
     },
@@ -69,7 +70,7 @@
     "ordered-imports": false,
     "quotemark": [
       true,
-      "single"
+      "double"
     ],
     "trailing-comma": false,
     "no-conflicting-lifecycle": true,

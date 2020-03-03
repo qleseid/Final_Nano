@@ -1,0 +1,21 @@
+<!--*********** MAIN AREA CONTENT **********-->
+<div class="app-selected">
+<div class="desc-title-area has-background-white">
+    <p>{{ selectedTitle }}</p>
+</div>
+
+<div class="selected-img image is-16by9" *ngIf="picture">
+    <img src="{{ selectedImg }}" alt="Item" width="720" height="720" />
+</div>
+
+<div *ngIf="!picture">
+   <video width="720" height="640" controls>
+  <source src="{{ selectedImg }}" type="video/mp4">
+  Your browser does not support the video tag.
+  </video>
+</div>
+
+<textarea class="desc-text-area has-background-white">{{
+    selectedDesctip
+  }}</textarea>
+</div>

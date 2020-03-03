@@ -1,47 +1,127 @@
 <div class="centered-content">
-    <div class="home-container">
+  <div class="home-container">
+    <!--*********** SIDE BAR **********-->
+    <div class="sidebar has-background-white">
+      <h1 class="title has-text-primary">
+        Items
+      </h1>
+      <div class="selectable-area">
 
-        <!--*********** SIDE BAR **********-->
-        <div class="sidebar has-background-white">
-            <h1 class="title has-text-primary">
-                Locations
-            </h1>
+        <!--*********** SIDE BAR LIST ITEMS **********-->
+        <article class="media selectable-area-item" *ngFor="let item of items; let i = index"
+          (click)="itemClicked(item, i)" [ngStyle]="{
+            background: (i + 1) % 2 == 0 ? 'burlywood' : 'lightsteelblue'}">
+          <figure class="media-left">
+            <p class="image is-64x64">
 
-            <div class="selectable-area">
-            <a class="selectable-area-item is-active">
-                <p>Item #1</p>
+              <img #img src="{{item.file_path}}" *ngIf="!item.file_path.endsWith('.mp4')"/>
 
-            </a>
-            <a class="selectable-area-item">
-                <p>Item #1</p>
+              <video width="64" height="64" controls *ngIf="item.file_path.endsWith('.mp4')">
+                <source src="{{ item.file_path }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
 
-            </a>
-
+            </p>
+          </figure>
+          <div class="media-content">
+            <div class="content">
+              <p #title>{{ item.title }}</p>
             </div>
+          </div>
+        </article>
+      </div>
 
-            <button class="button is-grey-lighter has-background-gray">+ New Location</button>
+    <!--*********** SIDE BAR MENU BUTTON**********-->
+      <div class="dropdown is-up">
+        <div class="dropdown-trigger">
+          <button class="button is-primary is-inverted" aria-haspopup="true" aria-controls="dropdown-menu7">
+            <span class="icon">
+              <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor"
+                  d="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z" />
+              </svg>
+            </span>
+          </button>
         </div>
-
-
-        <!--*********** MAIN AREA **********-->
-        <div class="home-selected-container has-background-light">
-            <h1 class="title has-text-primary">
-                Selected
-            </h1>
-
-            <div class="desc-title-area has-background-white">
-                <p>The selected item title</p>
+        <div class="dropdown-menu" id="dropdown-menu7" role="menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item">
+              <div class="dropdown-content">
+                <a (click)="newItemClick()" class="dropdown-item">
+                  New Item
+                </a>
+                <a (click)="viewSelectClick()" class="dropdown-item">
+                  View Selected
+                </a>
+                <hr class="dropdown-divider" />
+                <a (click)="logout()" class="dropdown-item tag is-danger">
+                  <span class="icon is-small">
+                    <i class="fa fa-times"></i>
+                  </span>
+                  <span>Logout</span>
+                </a>
+              </div>
             </div>
-
-            <div class="selected-img"> 
-                <img src="../assets/img/harley.jpg" alt="HTML5 Icon" width="720" height="720">
-           </div>
-
-            <div class="desc-text-area has-background-white">
-                <textarea>The is were the text will go.</textarea>
-            </div>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!--*********** MAIN AREA **********-->
+    <div class="home-selected-container has-background-grey-lighter">
+      <div class="home-selected-top-bar">
+        <h1 class="title has-text-primary">
+          {{selectedText}}
+        </h1>
+
+    <!--*********** MAIN AREA MENU **********-->
+        <div class="dropdown is-right is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button is-primary is-inverted" aria-haspopup="true" aria-controls="dropdown-menu4">
+              <span class="icon">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M16,20H20V16H16M16,14H20V10H16M10,8H14V4H10M16,8H20V4H16M10,14H14V10H10M4,14H8V10H4M4,20H8V16H4M10,20H14V16H10M4,8H8V4H4V8Z" />
+                </svg>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+            <div class="dropdown-content">
+              <div class="dropdown-item">
+                <div class="dropdown-content">
+                  <a (click)="newItemClick()" class="dropdown-item">
+                    New Item
+                  </a>
+                  <a (click)="updateItemClick()" class="dropdown-item">
+                      Update Item
+                  </a>
+                  <hr class="dropdown-divider" />
+                  <a (click)="deleteItemClick()"
+                    class="dropdown-item tag is-danger">
+                  <span class="icon is-small">
+                    <i class="fa fa-times"></i>
+                  </span>
+                  <span>Delete Item</span>
+                </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!--*********** MAIN AREA CONTENT **********-->
+    <app-selected *ngIf="homeView"
+      [selectedImg]="selectedImg"
+      [selectedTitle]="selectedTitle"
+      [selectedDesctip]="selectedDesctip">
+    </app-selected>
+
+    <app-new-item *ngIf="!homeView"
+    (uploadComplete)="viewSelectClick()">
+  </app-new-item>
 
     </div>
+  </div>
 </div>
-<p>home-view works!</p>
